@@ -1,0 +1,23 @@
+.floater{
+    width:50%;
+	position: absolute;
+}
+.left {
+    left: 10px;
+}
+.right {
+    right: 10px;
+}
+.top {
+	position: absolute;
+	top: 10px;
+
+}
+.bottom {
+	bottom: 10px;
+}
+.center {
+    left: 50%;
+    transform:translateX(-50%);
+}
+

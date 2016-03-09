@@ -1,0 +1,169 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>Cuadro de Mando</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="index.html">Home</a>
+            </li>
+            <li class="active">
+                <strong>Cuadro de Mando Básico</strong>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2">
+        <div class="btn-group" dropdown >
+            <button type="button" class="btn btn-primary dropdown-toggle">
+            Action <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+                <li><a href="#/main/201505">2015/05</a></li>
+                <li><a href="#/main/201504">2015/04</a></li>
+                <li><a href="#/main/201503">2015/03</a></li>
+                <li><a href="#/main/201502">2015/02</a></li>
+                <li><a href="#/main/201501">2015/01</a></li>
+                <li class="divider"></li>
+                <li><a href="#/main/201412">2014/12</a></li>
+                <li><a href="#/main/201411">2014/11</a></li>
+                <li><a href="#/main/201410">2014/10</a></li>
+                <li><a href="#/main/201409">2014/09</a></li>
+                <li><a href="#/main/201408">2014/08</a></li>
+                <li><a href="#/main/201407">2014/07</a></li>
+                <li><a href="#/main/201406">2014/06</a></li>
+                <li><a href="#/main/201405">2014/05</a></li>
+                <li><a href="#/main/201404">2014/04</a></li>
+                <li><a href="#/main/201403">2014/03</a></li>
+                <li><a href="#/main/201402">2014/02</a></li>
+                <li><a href="#/main/201401">2014/01</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-6" ng-controller="chartJsCtrl as chart">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>Cuenta de Explotación
+                        <button type="button" class="btn btn-primary btn-xs" ng-click="chart.downMonth()"> Mes Anterior</button>
+                        <button type="button" class="btn btn-primary btn-xs" ng-click="chart.upMonth()">Mes Siguiente</button>
+                    </h5>
+                    <div ibox-tools></div>
+                </div>
+                <div class="ibox-content">
+                    <div>
+                        <canvas linechart options="chart.lineOptions_1" data="chart.lineData_1" height="140" responsive="true" legend="true" series="['serie1','serie2','series3','serie4']"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+        <div ng-controller="indicatorCtrl as indicator" class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>Indicadores finanzas </h5>
+
+                <div ibox-tools></div>
+            </div>
+            <div class="ibox-content">
+
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Tendencia</th>
+                        <th>Titulo</th>
+                        <th>Frecuencia</th>
+                        <th>Objectivo</th>
+                        <th>Valor</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    <tr ng-repeat="indicator in indicator.kpi">
+                        <td>{{indicator._id}}</td>
+                        <td><line-chart data="indicator.LineChart.data" options="indicator.LineChart.options"></line-chart></td>
+                        <td>{{indicator.title}}</td>
+                        <td>{{indicator.frecuency}}</td>
+                        <td>{{indicator.reference[11] | number : 0}}{{indicator.unit}}({{indicator.alert_w}}/{{indicator.alert_f}})</td>
+                        <td ng-class="{'text-navy' : indicator.flag=='1','text-warning' : indicator.flag=='2','text-danger' : indicator.flag=='3'}">
+                            <i ng-class="{'fa fa-level-up':indicator.flag==1,'fa fa-level-down':indicator.flag==2 || indicator.flag==3}">
+                            </i>
+                        {{indicator.result[11] | number : 0}}{{indicator.unit}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    </div>
+    <div class="row">
+        <div class="col-lg-6" ng-controller="chartJsmCtrl as chart">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>Cuenta de Explotación - Mochila
+                        <button type="button" class="btn btn-primary btn-xs" ng-click="chart.downMonth()"> Mes Anterior</button>
+                        <button type="button" class="btn btn-primary btn-xs" ng-click="chart.upMonth()">Mes Siguiente</button>
+                    </h5>
+                    <div ibox-tools></div>
+                </div>
+                <div class="ibox-content">
+                    <div>
+                        <canvas linechart options="chart.lineOptions_1" data="chart.lineData_1" height="140" responsive="true" legend="true" series="['serie1','serie2','series3','serie4']"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+        <div ng-controller="indicatormCtrl as indicator" class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>Indicadores finanzas - Mochila </h5>
+
+                <div ibox-tools></div>
+            </div>
+            <div class="ibox-content">
+
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Tendencia</th>
+                        <th>Titulo</th>
+                        <th>Frecuencia</th>
+                        <th>Objectivo</th>
+                        <th>Valor</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    <tr ng-repeat="indicator in indicator.kpi">
+                        <td>{{indicator._id}}</td>
+                        <td><line-chart data="indicator.LineChart.data" options="indicator.LineChart.options"></line-chart></td>
+                        <td>{{indicator.title}}</td>
+                        <td>{{indicator.frecuency}}</td>
+                        <td>{{indicator.reference[11] | number : 0}}{{indicator.unit}}({{indicator.alert_w}}/{{indicator.alert_f}})</td>
+                        <td ng-class="{'text-navy' : indicator.flag=='1','text-warning' : indicator.flag=='2','text-danger' : indicator.flag=='3'}">
+                            <i ng-class="{'fa fa-level-up':indicator.flag==1,'fa fa-level-down':indicator.flag==2 || indicator.flag==3}">
+                            </i>
+                        {{indicator.result[11] | number : 0}}{{indicator.unit}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>Otros Cuadros-3</h5>
+                    <div ibox-tools></div>
+                </div>
+                <div class="ibox-content">
+                    <div>
+                        <canvas radarchart options="chart.radarOptions" data="chart.radarData" responsive=true></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

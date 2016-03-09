@@ -1,0 +1,67 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>Mantenimiento Datos</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="index.html">Home</a>
+            </li>
+            <li class="active">
+                <strong>Mantenimiento Datos</strong>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2">
+
+    </div>
+</div>
+<div class="wrapper wrapper-content animated fadeInRight">
+<div class="row">
+    <div class="col-lg-12" ng-controller="datosCtrl as datos">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>Datos
+                    <button type="button" class="btn btn-primary btn-xs" ng-click="datos.datosAdd()"> Añadir</button>
+                </h5>
+                <div ibox-tools></div>
+            </div>
+            <div class="ibox-content">
+
+                <table class="table icons-box">
+                    <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Ingreso Venta</th>
+                        <th>Gasto Compra</th>
+                        <th>Gasto Personal</th>
+                        <th>Gasto Explotación</th>
+                        <th>Impagos</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr  ng-repeat="dato in datos.data">
+                        <td>{{dato.fecha | date:'yyyy-MM'}}</td>
+                        <td>{{dato.ingresoVenta}}</td>
+                        <td>{{dato.gastoCompra}}</td>
+                        <td>{{dato.gastoPersonal}}</td>
+                        <td>{{dato.gastoExplotacion}}</td>
+                        <td>{{dato.impagos}}</td>
+                        <td class="infont">
+                            <a href="" ng-click="$parent.datos.datosEditar(dato.fecha)"><i class="fa fa-edit"></i> </a>
+                        </td>
+<!-- Para evitar problemas, NO activo el borrado de datos
+                        <td class="infont">
+                            <a href="" ng-click="$parent.datos.datosBorrar(dato.fecha)"><i class="fa fa-eraser"></i> </a>
+                        </td>
+-->
+                    </tr>
+
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+ 
+
+</div>
+</div>

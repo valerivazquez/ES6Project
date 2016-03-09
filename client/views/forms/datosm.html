@@ -1,0 +1,69 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>Basic Form</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="index.html">Home</a>
+            </li>
+            <li>
+                <a>Forms</a>
+            </li>
+            <li class="active">
+                <strong>Añadir Mochila</strong>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2">
+
+    </div>
+</div>
+<div class="wrapper wrapper-content animated fadeInRight">
+<div class="row">
+    <div class="col-lg-5">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>Horizontal form</h5>
+
+                <div ibox-tools></div>
+            </div>
+            <div class="ibox-content" ng-controller="datosmCtrl as datos">
+                <form class="form-horizontal">
+                    <p>{{datos.mensaje}}</p>
+
+                    <div class="form-group"><label class="col-lg-2 control-label">Fecha</label>
+
+                        <div class="col-lg-10"><input type="month" placeholder="Año" class="form-control" ng-model="datos.nuevoDato.fecha"> <span class="help-block m-b-none">fecha del dato a introducir.</span>
+                        </div>
+                    </div>
+                    <div class="form-group"><label class="col-lg-2 control-label">Ingreso Venta</label>
+
+                        <div class="col-lg-10"><input type="number" placeholder="Ingreso Venta" class="form-control" ng-model="datos.nuevoDato.ingresoVenta"></div>
+                    </div>
+                    <div class="form-group"><label class="col-lg-2 control-label">Gasto Compra</label>
+
+                        <div class="col-lg-10"><input type="number" placeholder="Gasto Compra" class="form-control" ng-model="datos.nuevoDato.gastoCompra"></div>
+                    </div>
+                    <div class="form-group"><label class="col-lg-2 control-label">Gasto Personal</label>
+
+                        <div class="col-lg-10"><input type="number" placeholder="Gasto Personal" class="form-control" ng-model="datos.nuevoDato.gastoPersonal"></div>
+                    </div>
+                    <div class="form-group"><label class="col-lg-2 control-label">Gasto Explotación</label>
+
+                        <div class="col-lg-10"><input type="number" placeholder="Gasto Explotación" class="form-control" ng-model="datos.nuevoDato.gastoExplotacion"></div>
+                    </div>
+                    <div class="form-group"><label class="col-lg-2 control-label">Impagos</label>
+
+                        <div class="col-lg-10"><input type="number" class="form-control" ng-model="datos.nuevoDato.impagos"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-lg-offset-2 col-lg-10">
+                            <button class="btn btn-sm btn-white" type="button" ng-click="datos.datosGuardar(datos.nuevoDato)">Guardar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
