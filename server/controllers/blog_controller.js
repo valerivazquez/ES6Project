@@ -1,25 +1,39 @@
-var models = require('../models/models.js');
+// Ojo!!! var models = require('../models/models.js');
+import blogsData from '../data/blogsData.js';
+import countersData from '../data/countersData.js';
+
 
 
 // Autoload - factoriza el código si ruta incluye :quizId
-exports.load = function (req, res, next, quizId) {
- 	models.Quiz.find({
- 		where: { id: Number(quizId) },
- 		include: [{ model: models.Comment }]
- 		}).then(function(quiz){
-	 		if (quiz){
-	 			req.quiz = quiz;
+exports.load = function (req, res, next, blogId) {
+	console.log(blogId);
+	blogsData.findingById(blogId)
+ 	.then(function(blog){
+	 		if (blog.length){
+	 			req.blog = blog[0];
 	 			next();
-	 		} else { 
-	 			next (new Error('No existe quizId= ' + quizId));
+	 		} else {
+	 			return res.status(401).send({ message: 'Wrong blog id' }); 
 	 		}
 	 	}
-	).catch(function(error) {next(error);});
+	).fail(function(error) {next(error);});
 	
 };
 
-// GET /quizzes/question
+// GET /blogs
 exports.index = function (req, res) {
+	blogsData.findingAll()
+		.then(function (data) {
+			res.json(data);
+		})
+		.fail(function (err) {
+			res.status(500).send(err);
+		});
+
+
+
+/*
+
 	console.log("query:", req.query.search);
 	if (req.query.search){
 		req.query.search = req.query.search.replace(/ /g,"%");
@@ -32,7 +46,7 @@ exports.index = function (req, res) {
  			res.render('quizes/index', {quizes : quizes, errors : []});
  		})
  	}
-	
+*/	
 };
 
 // GET /quizzes/new
@@ -44,21 +58,19 @@ exports.new = function (req, res) {
 
 // GET /quizzes/create
 exports.create = function (req, res) {
- 	var quiz = models.Quiz.build(req.body.quiz);
-
- 	quiz
- 	.validate()
- 	.then(
- 		function(err){
- 			if (err){
-			 	res.render('quizes/new', {quiz : quiz, errors : err.errors});
- 			} else {	// guarda en DB los campos pregunta y respuesta de quiz
- 				quiz
- 				.save({fields: ["pregunta", "respuesta", "tema"]})
- 				.then(function(){res.redirect('/quizes')})
- 			}
- 		}
- 	);
+ 	let seq;
+ 	let blog = req.body;
+ 	countersData.getNextSequence('blogs')
+ 	.then(function (data){
+	 	blog._id = data.value.seq;
+		blogsData.insertingDatos(blog)
+			.then(function (data) {
+				res.json({result : "0"});
+			})
+			.fail(function (err) {
+				res.status(500).send(err);
+			});
+	});
 };
 
 // GET /quizzes/:id/edit
@@ -70,31 +82,36 @@ exports.edit = function (req, res) {
 
 // PUT /quizzes/:id
 exports.update = function (req, res) {
- 	req.quiz.pregunta = req.body.quiz.pregunta;
- 	req.quiz.respuesta = req.body.quiz.respuesta;
- 	req.quiz.tema = req.body.quiz.tema;
- 	console.log("Tema:",req.body.quiz.tema )
- 	req.quiz
- 	.validate()
- 	.then(
- 		function(err){
- 			if (err){
-			 	res.render('quizes/edit', {quiz : req.quiz, errors : err.errors});
- 			} else {	// guarda en DB los campos pregunta y respuesta de quiz
- 				req.quiz
- 				.save({fields: ["pregunta", "respuesta", "tema"]})
- 				.then(function(){res.redirect('/quizes');});
- 			}
- 		}
- 	);
+	console.log("Blog Update:", req.blog)
+	if (req.blog){
+		blogsData.updatingById(req.blog._id, req.body)
+		.then(function (data) {
+			res.json({result : "0"});
+		})
+		.fail(function (err) {
+			res.status(500).send(err);
+		});
+	} else {
+		return res.status(401).send({ message: 'Wrong blog id' });
+	};
+	
 };
 
 // DELETE /quizzes/:id
 exports.destroy = function (req, res) {
-	console.log("id", req.quiz.pregunta, req.quiz.id);
- 	req.quiz.destroy().then( function(){
- 		res.redirect('/quizes');
- 	}).catch(function(error){next(error)});
+	console.log("Blog Destroy:", req.blog)
+	if (req.blog){
+		blogsData.deletingById(req.blog._id)
+		.then(function (data) {
+			res.json({result : "0"});
+		})
+		.fail(function (err) {
+			res.status(500).send(err);
+		});
+	} else {
+		return res.status(401).send({ message: 'Wrong blog id' });
+	};
+	
 };
 
 
@@ -103,8 +120,12 @@ exports.destroy = function (req, res) {
 
 // GET /quizzes/question
 exports.show = function (req, res) {
-	console.log("QuizId", req.quiz)
- 	res.render('quizes/show', {quiz : req.quiz, errors : []});
+	console.log("Blog:", req.blog)
+	if (req.blog){
+			res.json(req.blog);
+	} else {
+			res.status(500).send(err);
+		};
 };
 
 // GET /quizzes/answer
@@ -115,5 +136,3 @@ exports.answer = function (req, res) {
 	}
 	res.render('quizes/answer', { quiz : req.quiz ,respuesta: resultado, errors : []});
 };
-Status API Training Shop Blog About Pricing
-© 2016 GitHub, Inc. Terms Privacy Security Contact Help

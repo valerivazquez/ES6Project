@@ -6,6 +6,11 @@ var kpiData = require('./data/kpiData.js');
 var kpidatosData = require('./data/kpidatosData.js');
 var kpidatosmData = require('./data/kpidatosmData.js');
 
+var blogsData = require('./data/blogsData.js');
+var countersData = require('./data/countersData.js');
+
+
+import blogController from './controllers/blog_controller';
 
 
 var moment = require('moment');
@@ -19,6 +24,9 @@ exports.init = function (mongo) {
     kpiData.init(mongo);
     datosData.init(mongo);
     datosmData.init(mongo);
+    blogsData.init(mongo);
+    countersData.init(mongo);
+
 };
 
 module.exports.route = function (app) {
@@ -30,15 +38,15 @@ module.exports.route = function (app) {
  */
 
 // ============>>>> Disable for testing <<<<<<================
-/*
+
 // Esta función se ejecuta para todas las rutas que empiecen por '/api'
-app.use('/api/', function (req, res, next) {
+app.use('/api/private', function (req, res, next) {
 
 	userData.ensureAuthenticated(req, res);
 	next();
 
 });
-*/
+
 
 
 /*
@@ -104,18 +112,17 @@ app.use('/api/', function (req, res, next) {
 		})
 
 
+// Autoload de comandos con :blogId
+app.param('blogId', blogController.load);  // autoload :quizId
 
-/*
 // routes for /blogs
-app.get('/blogs',					   blogController.index);
-app.get('/blogs/:blogId(\\d+)',		   blogController.show);
-app.get('/blogs/:blogId(\\d+)/answer', blogController.answer);
-app.get('/blogs/new',				   sessionController.loginRequired, blogController.new);
-app.post('/blogs/create',			   sessionController.loginRequired, blogController.create);
-app.get('/blogs/:blogId(\\d+)/edit',   sessionController.loginRequired, blogController.edit);
-app.put('/blogs/:blogId(\\d+)',		   sessionController.loginRequired, blogController.update);
-app.delete('/blogs/:blogId(\\d+)',	   sessionController.loginRequired, blogController.destroy);
-*/
+app.get('/api/blogs',					           blogController.index);
+app.get('/api/blogs/:blogId(\\d+)',		           blogController.show);
+
+app.post('/api/private/blogs/create',			   blogController.create);
+app.put('/api/private/blogs/:blogId(\\d+)',		   blogController.update);
+app.delete('/api/private/blogs/:blogId(\\d+)',	   blogController.destroy);
+
 
 
 

@@ -3,6 +3,7 @@ var config = require('../../server/config');
 // var mondodb = require('mongodb');
 
 var MongoClient = require('mongodb').MongoClient;
+var Mongodb = require('mongodb');
 
 
 var mongoUrl = "mongodb://" + config.MONGO_URI;
@@ -12,6 +13,8 @@ var _db = "";
 //exports.ObjectId = mondodb.ObjectID; !!!OJO 
 exports.connecting = connecting;
 exports.finding = finding;
+exports.findAndModify = findAndModify;
+exports.ObjectId = ObjectId;
 exports.inserting = inserting;
 exports.updating = updating;
 exports.saving = saving;
@@ -38,8 +41,15 @@ function connecting(mongoCol) {
 	return deferred.promise;
 }
 
+function ObjectId(blogId){
+	console.log(typeof blogId);
+	return new Mongodb.ObjectId(blogId);
+}
+
+
 function finding(mongoCol, query) {
 	var deferred = Q.defer();
+	console.log(query);
 	connecting(mongoCol)
 		.then(function (colDb) {
 			colDb.find(query).toArray(function (err, result) {
@@ -51,6 +61,23 @@ function finding(mongoCol, query) {
 		});
 	return deferred.promise;
 }
+
+function findAndModify(mongoCol, query) {
+	var deferred = Q.defer();
+	connecting(mongoCol)
+		.then(function (colDb) {
+			console.log('Query:', query)
+			colDb.findAndModify(query.query,[],query.update, query.options, function (err, result) {
+				callback2Promise(err, result, deferred);
+			});
+		})
+		.fail(function (err) {
+			callback2Promise(err, result, deferred);
+		});
+	return deferred.promise;
+}
+
+
 
 function inserting(mongoCol, document) {
 	var deferred = Q.defer();
@@ -94,6 +121,8 @@ function updating(mongoCol, query, document) {
 		});
 	return deferred.promise;
 }
+
+
 
 function deletingOne(mongoCol, query) {
 	var deferred = Q.defer();
